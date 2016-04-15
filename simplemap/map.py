@@ -14,7 +14,8 @@ import os
 import sys
 import traceback
 
-TEMPLATES_DIR = FileSystemLoader('simplemap/templates')
+TEMPLATES_DIR = FileSystemLoader(os.path.join(os.path.dirname(__file__),
+                                              'templates'))
 ZOOM_DEFAULT = 11
 
 class Map(object):
@@ -37,15 +38,15 @@ class Map(object):
 		if zoom:
 			self._zoom = zoom
 		else:
-			#Don't allow zoom to be null if customer center is given 
+			#Don't allow zoom to be null if customer center is given
 			self._zoom = ZOOM_DEFAULT if self.center else 'null'
 
 	def get_zoom(self):
 		return self._zoom
-	
+
 	def set_config(self, config_file):
 		try:
-			with open(config_file, "r") as config:    
+			with open(config_file, "r") as config:
 				self._config = json.load(config)
 		except IOError:
 			sys.exit("Error, unable to open {} config file.".format(config_file))
